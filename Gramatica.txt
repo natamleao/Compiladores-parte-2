@@ -4,9 +4,10 @@
 <Factor> ::= (PLUS | MINUS)* <Factor>
 <Factor> ::= <Pow>
 <Pow> ::= <Atom> (<Pow> <Factor>)*
-<Atom> ::= INT | FLOAT | STRING | ID | <ListExp> | <TupleExp> | LPAR <Exp> RPAR
+<Atom> ::= INT | FLOAT | STRING | ID | <ListExp> | <TupleExp> | <DictExp> | LPAR <Exp> RPAR
 <ListExp> ::= LSQUARE [ <Exp> (COMMA <Exp>)* ] RSQUARE
 <TupleExp> :: = LPAR [ <Exp> (COMMA <Exp>)* ] RPAR
+<DictExp> ::= LBRACE [((INT | FLOAT | STRING) COLON (INT | FLOAT | STRING))(COMMA (INT | FLOAT | STRING) COLON (INT | FLOAT | STRING))*] RBRACE
 
 PLUS é o +
 MUL é o *
@@ -15,6 +16,9 @@ MINUS é o -
 POW é o ^
 LPAR é o (
 RPAR é o )
+COLON é :
+LBRACE: o símbolo ´{´ (chave esquerda).
+RBRACE: o símbolo ´}´ (chave direita).
 INT é um inteiro qualquer
 FLOAT é um float qualquer
 ID é qualquer identificador

@@ -167,3 +167,22 @@ class NoTuple(Visitor):
 
 	def __repr__(self):
 		return f'{self.elements}'
+
+class NoDict(Visitor):
+	def __init__(self, tok):
+		self.elements = tok
+
+
+	def visit(self, operator):
+		lValue = []
+
+		for element_node in self.elements:
+			lValue.append(operator.registry(element_node.visit(operator)))
+		
+		DictValue = {}
+		for index in range(0, len(lValue),2): DictValue[lValue[index]] = lValue[index+1]
+   
+		return operator.success(TDict(dict(DictValue)).setMemory(operator))
+
+	def __repr__(self):
+		return f'{self.elements}'

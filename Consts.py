@@ -23,7 +23,10 @@ class Consts:
     GRAPH     = '@'
     LSQUARE   = "[" # Left  Box brackets [
     RSQUARE   = "]" # Right Box brackets ]
-    COMMA      = ","
+    COMMA     = ","
+    LBRACE    = "{"
+    RBRACE    = "}"
+    COLON     = ":"
 
 
     # Exemplos de Palavras reservadas

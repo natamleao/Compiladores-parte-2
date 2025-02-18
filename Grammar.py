@@ -125,7 +125,12 @@ class Atom(Grammar): # A variable from Grammar G
                     return ast.success(exp)
                 else:
                     return ast.fail(f"{Error.parserError}: Esperando por '{Consts.RPAR}'")
-
+        elif tok.type == Consts.LBRACE:
+            dictExp = ast.registry(DictExp(self.parser).Rule())
+            if (ast.error!=None): 
+                return ast
+            return ast.success(dictExp)
+            
         return ast.fail(f"{Error.parserError}: Esperado por '{Consts.INT}', '{Consts.FLOAT}', '{Consts.PLUS}', '{Consts.MINUS}', '{Consts.LPAR}'")
 
 class ListExp(Grammar):
@@ -138,9 +143,10 @@ class ListExp(Grammar):
             self.NextToken()
         else:
             elementNodes.append(ast.registry(Exp(self.parser).Rule()))
+            
             if (ast.error!=None):
                 return ast.fail(f"{Error.parserError}: Esperando por '{Consts.RSQUARE}', '{Consts.KEYS[Consts.LET]}', '{Consts.INT}', '{Consts.FLOAT}', '{Consts.ID}', '{Consts.PLUS}', '{Consts.MINUS}', '{Consts.LPAR}', '{Consts.LSQUARE}'")
-            
+
             while (self.CurrentToken().type == Consts.COMMA):
                 self.NextToken()
 
@@ -178,3 +184,44 @@ class TupleExp(Grammar):
             self.NextToken()
         
         return ast.success(NoTuple(elementNodes))
+    
+class DictExp(Grammar):
+    def Rule(self):
+        ast = self.GetParserManager()
+        elementNodes = []
+        self.NextToken()
+
+        if (self.CurrentToken().type == Consts.RBRACE): 
+            self.NextToken()
+        else:
+            elementNodes.append(ast.registry(Exp(self.parser).Rule()))
+            if (ast.error!=None):
+                return ast.fail(f"{Error.parserError}: Esperando por '{Consts.RBRACE}', '{Consts.KEYS[Consts.LET]}', '{Consts.INT}', '{Consts.FLOAT}', '{Consts.ID}', '{Consts.PLUS}', '{Consts.MINUS}', '{Consts.LPAR}', '{Consts.LSQUARE}'")
+            
+            if self.CurrentToken().type == Consts.COLON:                
+                self.NextToken()
+                elementNodes.append(ast.registry(Exp(self.parser).Rule()))
+                if (ast.error!=None): return ast
+                
+                # {1:1
+                while (self.CurrentToken().type == Consts.COMMA):
+                    self.NextToken()
+
+                    elementNodes.append(ast.registry(Exp(self.parser).Rule()))
+                    if (ast.error!=None): return ast
+                    
+                    if self.CurrentToken().type == Consts.COLON:
+                        self.NextToken()
+                    else:
+                        return ast.fail(f"{Error.parserError}: Esperando por '{Consts.COLON}' mas recebeu '{self.CurrentToken()}'")
+                    
+                    elementNodes.append(ast.registry(Exp(self.parser).Rule()))
+                    if (ast.error!=None): return ast
+
+            if (self.CurrentToken().type != Consts.RBRACE):
+                return ast.fail(f"{Error.parserError}: Esperando por '{Consts.RBRACE}' mas recebeu '{self.CurrentToken()}'")
+            self.NextToken()
+        
+        return ast.success(NoDict(elementNodes))
+    
+    

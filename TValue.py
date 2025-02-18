@@ -94,6 +94,18 @@ class TList(TValue):
 		copy = TList(self.value)
 		copy.setMemory(self.memory)
 		return copy	
+
+	def mult(self, other):
+		if isinstance(other, TNumber):
+			mult_list = []
+			for value in self.value:
+				result = value.mult(other)
+				if isinstance(result[0], TNumber):
+					mult_list.append(result[0].value)
+				else:
+					return None, result[1]
+			return TList(mult_list).setMemory(self.memory), None
+		return super().mult(other)
 	
 	def __repr__(self):
 		return f'{str(self.value)}'
@@ -116,3 +128,22 @@ class TTuple(TValue):
 	
 	def __repr__(self):
 		return f"{str(self.value)}"
+
+class TDict(TValue):
+	def __init__(self, value):
+		self.value = value
+		self.setMemory()
+	def setMemory(self, memory=None):
+		self.memory = memory
+		return self
+	def add(self, other):
+		if isinstance(other, TList):
+			return TList(self.value + other.value).setMemory(self.memory), None
+		return super().add(other)
+	def copy(self):
+		copy = TList(self.value)
+		copy.setMemory(self.memory)
+		return copy	
+	
+	def __repr__(self):
+		return f'{str(self.value)}'
