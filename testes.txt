@@ -1,0 +1,4 @@
+lista = [1, 2, 3, 4, 5]
+tupla = (10, 20, 30, 40, 50) 
+lista_mult = lista * 3
+usuarios = {"usuario_1": {"nome": "Carlos Silva", "idade": 29, "cidade": "São Paulo", "interesses": ["tecnologia", "programação", "ficção científica"]}, "usuario_2": {"nome": "Ana Oliveira", "idade": 24, "cidade": "Rio de Janeiro", "interesses": ["música", "viagens", "fotografia"]}, "usuario_3": {"nome": "Marcos Souza", "idade": 35, "cidade": "Belo Horizonte", "interesses": ["história", "política", "filmes clássicos"]}, "usuario_4": {"nome": "Julia Mendes", "idade": 22, "cidade": "Curitiba", "interesses": ["moda", "design", "arte"]}}

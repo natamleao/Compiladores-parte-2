@@ -125,6 +125,7 @@ class Atom(Grammar): # A variable from Grammar G
                     return ast.success(exp)
                 else:
                     return ast.fail(f"{Error.parserError}: Esperando por '{Consts.RPAR}'")
+        
         elif tok.type == Consts.LBRACE:
             dictExp = ast.registry(DictExp(self.parser).Rule())
             if (ast.error!=None): 
